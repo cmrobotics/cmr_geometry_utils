@@ -24,32 +24,24 @@ find_package(tf2 REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(angles REQUIRED)
 
-
-include_directories(include
-  ${rclcpp_INCLUDE_DIRS}
-  ${geometry_msgs_INCLUDE_DIRS}
-  ${tf2_ros_INCLUDE_DIRS}
-  ${tf2_INCLUDE_DIRS}
-  ${tf2_geometry_msgs_INCLUDE_DIRS}
-  ${angles_INCLUDE_DIRS}
+set(dependencies
+  "rclcpp"
+  "geometry_msgs"
+  "tf2_ros"
+  "tf2"
+  "tf2_geometry_msgs"
+  "angles"
 )
+
+include_directories(include)
 
 set(LIBRARY_NAME "${PROJECT_NAME}_lib")
 
 add_library(${LIBRARY_NAME} INTERFACE)
 
-target_include_directories(${LIBRARY_NAME} INTERFACE
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>
-)
-
-target_link_libraries(${LIBRARY_NAME} INTERFACE
-  ${rclcpp_LIBRARIES}
-  ${geometry_msgs_LIBRARIES}
-  ${tf2_ros_LIBRARIES}
-  ${tf2_geometry_msgs_LIBRARIES}
-  ${tf2_LIBRARIES}
-  ${angles_LIBRARIES}
+ament_target_dependencies(
+  ${LIBRARY_NAME} INTERFACE
+  ${dependencies}
 )
 
 install(TARGETS ${LIBRARY_NAME}
@@ -64,22 +56,13 @@ install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION include/${PROJECT_NAME}
 )
 
-set(dependencies
-  "rclcpp"
-  "geometry_msgs"
-  "tf2_ros"
-  "tf2"
-  "tf2_geometry_msgs"
-  "angles"
-)
-
 if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
   find_package(ament_cmake_pytest REQUIRED)
   add_subdirectory(test)
 endif()
 
-# ament_export_libraries(${LIBRARY_NAME} INTERFACE)
+ament_export_libraries(${LIBRARY_NAME} INTERFACE)
 ament_export_include_directories(include)
 ament_export_dependencies(${dependencies})
 ament_export_targets("export_${PROJECT_NAME}")
