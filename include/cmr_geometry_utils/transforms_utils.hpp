@@ -13,7 +13,7 @@
 
 namespace cmr_geometry_utils {
 
-bool transform_pose(const std::shared_ptr<tf2_ros::Buffer> tf, const std::string frame,
+inline bool transform_pose(const std::shared_ptr<tf2_ros::Buffer> tf, const std::string frame,
     const geometry_msgs::msg::PoseStamped & in_pose, geometry_msgs::msg::PoseStamped & out_pose,
     const rclcpp::Duration & transform_tolerance)
 {
