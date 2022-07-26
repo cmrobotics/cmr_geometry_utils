@@ -27,22 +27,39 @@ inline bool transform_pose(const std::shared_ptr<tf2_ros::Buffer> tf, const std:
     tf->transform(in_pose, out_pose, frame);
     return true;
   } catch (tf2::ExtrapolationException & ex) {
-    auto transform = tf->lookupTransform(
-                       frame,
-                       in_pose.header.frame_id,
-                       rclcpp::Time()
-                     );
-    if (
-      (rclcpp::Time(in_pose.header.stamp) - rclcpp::Time(transform.header.stamp)) >
-      transform_tolerance) {
+    try {      
+      auto transform = tf->lookupTransform(
+                        frame,
+                        in_pose.header.frame_id,
+                        rclcpp::Time()
+                      );
+      if (
+        (rclcpp::Time(in_pose.header.stamp) - rclcpp::Time(transform.header.stamp)) >
+        transform_tolerance) {
+        RCLCPP_ERROR(
+          rclcpp::get_logger("tf_help"),
+          "Transform data too old when converting from %s [%.8f] to %s [%.8f]",
+          in_pose.header.frame_id.c_str(), rclcpp::Time(in_pose.header.stamp).nanoseconds()/1e9,
+           frame.c_str(), rclcpp::Time(transform.header.stamp).nanoseconds()/1e9);
+        return false;
+      } else {
+        tf2::doTransform(in_pose, out_pose, transform);
+        return true;
+      }
+    } catch (tf2::LookupException & ex) {
       RCLCPP_ERROR(
         rclcpp::get_logger("tf_help"),
-        "Transform data too old when converting from %s to %s",
-        in_pose.header.frame_id.c_str(), frame.c_str());
+        "Exception in transform_pose: %s",
+        ex.what()
+      );
       return false;
-    } else {
-      tf2::doTransform(in_pose, out_pose, transform);
-      return true;
+    } catch (tf2::ExtrapolationException & ex) {
+      RCLCPP_ERROR(
+        rclcpp::get_logger("tf_help"),
+        "Exception in transform_pose: %s",
+        ex.what()
+      );
+      return false;
     }
   } catch (tf2::TransformException & ex) {
     RCLCPP_ERROR(
