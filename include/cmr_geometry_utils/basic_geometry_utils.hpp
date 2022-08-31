@@ -6,6 +6,9 @@
 #include <angles/angles.h>
 #include <cmath>
 
+namespace cmr_geometry_utils
+{
+  
 inline double compute_distance_2d(const geometry_msgs::msg::Point & start, const geometry_msgs::msg::Point & goal)
 {
   return std::hypot(goal.x - start.x, 
