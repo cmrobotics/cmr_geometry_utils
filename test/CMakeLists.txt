@@ -15,6 +15,13 @@ target_link_libraries(basic_geometry_test
 ament_target_dependencies(basic_geometry_test ${dependencies})
 target_include_directories(basic_geometry_test PRIVATE "../include" "include" ${${TESTS_UTILS_PROJECT}_INCLUDE_DIRS})
 
+ament_add_gtest(pose_geometry_test pose_geometry_test.cpp)
+target_link_libraries(pose_geometry_test
+  cmr_geometry_utils_lib
+)
+ament_target_dependencies(pose_geometry_test ${dependencies})
+target_include_directories(pose_geometry_test PRIVATE "../include" "include" ${${TESTS_UTILS_PROJECT}_INCLUDE_DIRS})
+
 
 # ament_add_gtest(transforms_test transforms_test.cpp)
 # target_link_libraries(transforms_test
