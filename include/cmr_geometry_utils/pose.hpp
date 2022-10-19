@@ -1,0 +1,35 @@
+// #pragma once
+
+#include <geometry_msgs/msg/pose.hpp>
+#include <geometry_msgs/msg/pose_with_covariance.hpp>
+#include <geometry_msgs/msg/quaternion.hpp>
+
+#include "quaternion.hpp"
+
+namespace cmr_geometry_utils {
+namespace pose {
+    inline void average(std::vector<geometry_msgs::msg::Pose> poses, geometry_msgs::msg::Pose& average_pose){
+        std::vector<geometry_msgs::msg::Quaternion> quats;
+        for(auto& pose : poses){
+            average_pose.position.x += pose.position.x;
+            average_pose.position.y += pose.position.y;
+
+            quats.push_back(pose.orientation);
+        }
+
+        average_pose.position.x /= poses.size();
+        average_pose.position.y /= poses.size();
+
+        
+        cmr_geometry_utils::quaternion::average(quats, average_pose.orientation);
+    }
+
+    inline void average(std::vector<geometry_msgs::msg::PoseWithCovariance> poses_with_covariance, geometry_msgs::msg::Pose& average_pose){
+        std::vector<geometry_msgs::msg::Pose> poses;
+        for(auto& pose : poses_with_covariance){
+            poses.push_back(pose.pose);
+        }
+        average(poses, average_pose);
+    }
+} // pose
+} // cmr_geometry_utils
