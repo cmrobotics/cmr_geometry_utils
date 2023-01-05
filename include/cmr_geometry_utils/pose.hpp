@@ -8,7 +8,8 @@
 
 namespace cmr_geometry_utils {
 namespace pose {
-    inline void average(const std::vector<geometry_msgs::msg::Pose> & poses, geometry_msgs::msg::Pose& average_pose){
+    template <template<typename> class Container>
+    inline void average(const Container<geometry_msgs::msg::Pose> & poses, geometry_msgs::msg::Pose& average_pose){
         std::vector<geometry_msgs::msg::Quaternion> quats;
         for(const auto& pose : poses){
             average_pose.position.x += pose.position.x;

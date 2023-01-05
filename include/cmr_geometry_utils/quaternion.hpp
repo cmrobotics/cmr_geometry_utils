@@ -12,8 +12,9 @@ namespace quaternion {
         q_eig[3] = q_msg.w;
     }
 
+    template <template<typename> class Container>
     inline void average(
-        const std::vector<geometry_msgs::msg::Quaternion> & quats
+        const Container<geometry_msgs::msg::Quaternion> & quats
         , geometry_msgs::msg::Quaternion& average_quaternion){
 
         Eigen::Matrix4f A = Eigen::Matrix4f::Zero();
