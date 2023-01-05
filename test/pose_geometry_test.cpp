@@ -18,14 +18,14 @@ TEST(PoseGeometryTest, calculate_average_pose)
     p1.orientation.w = 1.0;
 
     geometry_msgs::msg::Pose p2;
-    p1.position.x = 20.0;
-    p1.position.y = 10.0;
-    p1.position.z = 0.0;
+    p2.position.x = 20.0;
+    p2.position.y = 10.0;
+    p2.position.z = 0.0;
 
-    p1.orientation.x = 0.8788171;
-    p1.orientation.y = 0.0;
-    p1.orientation.z = 0.0;
-    p1.orientation.w = 0.4771588;
+    p2.orientation.x = 0.8788171;
+    p2.orientation.y = 0.0;
+    p2.orientation.z = 0.0;
+    p2.orientation.w = 0.4771588;
 
 
 
