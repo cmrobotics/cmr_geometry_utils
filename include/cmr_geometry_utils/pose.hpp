@@ -25,7 +25,8 @@ namespace pose {
         cmr_geometry_utils::quaternion::average(quats, average_pose.orientation);
     }
 
-    inline void average(const std::vector<geometry_msgs::msg::PoseWithCovariance> & poses_with_covariance, geometry_msgs::msg::Pose& average_pose){
+    template <template<typename> class Container>
+    inline void average(const Container<geometry_msgs::msg::PoseWithCovariance> & poses_with_covariance, geometry_msgs::msg::Pose& average_pose){
         std::vector<geometry_msgs::msg::Pose> poses;
         for(const auto& pose : poses_with_covariance){
             poses.push_back(pose.pose);
