@@ -8,9 +8,9 @@
 
 namespace cmr_geometry_utils {
 namespace pose {
-    inline void average(std::vector<geometry_msgs::msg::Pose> poses, geometry_msgs::msg::Pose& average_pose){
+    inline void average(const std::vector<geometry_msgs::msg::Pose> & poses, geometry_msgs::msg::Pose& average_pose){
         std::vector<geometry_msgs::msg::Quaternion> quats;
-        for(auto& pose : poses){
+        for(const auto& pose : poses){
             average_pose.position.x += pose.position.x;
             average_pose.position.y += pose.position.y;
 
@@ -24,9 +24,9 @@ namespace pose {
         cmr_geometry_utils::quaternion::average(quats, average_pose.orientation);
     }
 
-    inline void average(std::vector<geometry_msgs::msg::PoseWithCovariance> poses_with_covariance, geometry_msgs::msg::Pose& average_pose){
+    inline void average(const std::vector<geometry_msgs::msg::PoseWithCovariance> & poses_with_covariance, geometry_msgs::msg::Pose& average_pose){
         std::vector<geometry_msgs::msg::Pose> poses;
-        for(auto& pose : poses_with_covariance){
+        for(const auto& pose : poses_with_covariance){
             poses.push_back(pose.pose);
         }
         average(poses, average_pose);

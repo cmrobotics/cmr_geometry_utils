@@ -13,7 +13,7 @@ namespace quaternion {
     }
 
     inline void average(
-        std::vector<geometry_msgs::msg::Quaternion> quats
+        const std::vector<geometry_msgs::msg::Quaternion> & quats
         , geometry_msgs::msg::Quaternion& average_quaternion){
 
         Eigen::Matrix4f A = Eigen::Matrix4f::Zero();
