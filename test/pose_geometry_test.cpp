@@ -67,3 +67,46 @@ TEST(PoseGeometryTest, calculate_average_pose)
       ASSERT_NEAR(p.orientation.w, 0.8594, 1e-4);
     }
 }
+
+TEST(PoseWithCovarianceGeometryTest, calculate_average_pose)
+{
+    geometry_msgs::msg::PoseWithCovariance p1;
+    p1.pose.position.x = 0.0;
+    p1.pose.position.y = 0.0;
+    p1.pose.position.z = 0.0;
+
+    p1.pose.orientation.x = 0.0;
+    p1.pose.orientation.y = 0.0;
+    p1.pose.orientation.z = 0.0;
+    p1.pose.orientation.w = 1.0;
+
+    geometry_msgs::msg::PoseWithCovariance p2;
+    p2.pose.position.x = 20.0;
+    p2.pose.position.y = 10.0;
+    p2.pose.position.z = 0.0;
+
+    p2.pose.orientation.x = 0.8788171;
+    p2.pose.orientation.y = 0.0;
+    p2.pose.orientation.z = 0.0;
+    p2.pose.orientation.w = 0.4771588;
+
+    // test using std::vector
+    {
+      geometry_msgs::msg::Pose p;
+      ASSERT_EQ(p.position.x, 0);
+      ASSERT_EQ(p.position.y, 0);
+      ASSERT_EQ(p.position.z, 0);
+
+      std::vector<geometry_msgs::msg::PoseWithCovariance> v = {p1, p2};
+      cmr_geometry_utils::pose::average(v, p);
+
+      ASSERT_EQ(p.position.x, 10.);
+      ASSERT_EQ(p.position.y, 5.);
+      ASSERT_EQ(p.position.z, 0.0);
+
+      ASSERT_NEAR(p.orientation.x, 0.5112, 1e-4);
+      ASSERT_EQ(p.orientation.y, 0.0);
+      ASSERT_EQ(p.orientation.z, 0.0);
+      ASSERT_NEAR(p.orientation.w, 0.8594, 1e-4);
+    }
+}
