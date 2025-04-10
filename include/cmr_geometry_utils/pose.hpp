@@ -14,12 +14,14 @@ namespace pose {
         for(const auto& pose : poses){
             average_pose.position.x += pose.position.x;
             average_pose.position.y += pose.position.y;
+            average_pose.position.z += pose.position.z;
 
             quats.push_back(pose.orientation);
         }
 
         average_pose.position.x /= poses.size();
         average_pose.position.y /= poses.size();
+        average_pose.position.z /= poses.size();
 
         
         cmr_geometry_utils::quaternion::average(quats, average_pose.orientation);
